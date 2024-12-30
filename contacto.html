@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <title>
+      Criação de website com carregamento dinâmico de conteúdo estático através
+      de AJAX
+    </title>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Patricia Gomes" />
+    <link rel="stylesheet" href="/css/styleContacto.css?v=2" />
+    <!-- CSS do Leaflet -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <!-- JS do Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <header class="headContainer">
+      <h1 class="logo">WorkOnPortfólios</h1>
+      <nav>
+        <a href="home.html" class="link">Índice</a>
+        <a href="portfolio.html" class="link">Portefólio</a>
+        <a href="orcamento.html" class="link">Pedido de Orçamento</a>
+        <a href="#" class="link">Contactos</a>
+      </nav>
+    </header>
+    <div class="formulario">
+      <form id="contactoForm">
+        <h1>Entre em Contacto!</h1>
+        <label
+          for="
+  name"
+          >Nome:</label
+        >
+        <input type="text" required />
+        <br />
+        <label
+          for="surname
+  "
+          >Apelido:</label
+        >
+        <input type="text" required />
+        <br />
+        <label
+          for="
+  phone"
+          >Telemóvel:</label
+        >
+        <input type="text" required />
+        <br />
+        <label
+          for="
+  email"
+          >E-mail:</label
+        >
+        <input type="email" required />
+        <br />
+        <label
+          for="
+  data"
+          >Data:</label
+        >
+        <input type="date" required />
+        <br />
+        <br />
+        <label for="reason">Motivo do Contacto da Reunião:</label>
+        <br />
+        <textarea
+          id="motivoReuniao"
+          name="motivoReuniao"
+          rows="5"
+          cols="50"
+          placeholder="Digite o motivo da reunião aqui..."
+          required
+        ></textarea>
+        <br />
+        <input type="submit" value="Enviar" />
+      </form>
+    </div>
+
+    <h1 class="localizacaoTitulo">Localização da Empresa</h1>
+    <div id="map"></div>
+
+    <footer>
+      <p>© 2024 WorkOnPortfólios</p>
+    </footer>
+    <script>
+      const form = document.getElementById("contactoForm");
+      document.addEventListener("DOMContentLoaded", function () {
+        var map = L.map("map").setView([38.736946, -9.142685], 15);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        var marker = L.marker([38.736946, -9.142685]).addTo(map);
+        marker
+          .bindPopup(
+            "<b>Aqui é a localização da nossa empresa!</b><br>Rua Exemplo, 123, Lisboa"
+          )
+          .openPopup();
+      });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        alert("A sua mensagem foi enviada com sucesso!");
+        form.reset();
+      });
+    </script>
+  </body>
+</html>

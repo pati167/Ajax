@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <title>Criação de website com carregamento dinâmico de conteúdo estático através
+      de AJAX</title>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Patricia Gomes" />
+    <link rel="stylesheet" href="css/styleOrcamento.css?v=2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <header class="headContainer">
+      <h1 class="logo">WorkOnPortfólios</h1>
+      <nav>
+        <a href="home.html" class="link">Índice</a>
+        <a href="portfolio.html" class="link">Portefólio</a>
+        <a href="#" class="link">Pedido de Orçamento</a>
+        <a href="contacto.html" class="link">Contactos</a>
+      </nav>
+    </header>
+    <div class="formulario">
+      <form id="orcamentoForm">
+        <h1>Dados</h1>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required /><br />
+        <label for="apelido">Apelido:</label>
+        <input type="text" id="apelido" required /><br />
+        <label for="telemovel">Telemóvel:</label>
+        <input
+          type="text"
+          id="telemovel"
+          required
+          pattern="\d+"
+          title="Somente números"
+        />
+        <br /><br />
+        <h1>Pedido de orçamento</h1>
+        <label for="pagina">Tipo de página web:</label>
+        <select id="tipoPagina" required>
+          <option value="1000">Página Básica - €1000</option>
+          <option value="2000">Página Intermediária - €2000</option>
+          <option value="3000">Página Avançada - €3000</option>
+          <option value="4000">Página Premium - €4000</option></select
+        ><br />
+        <label for="prazo">Prazo em meses:</label>
+        <input
+          type="text"
+          id="prazo"
+          required
+          pattern="\d+"
+          title="Somente números"
+        />
+        <br /><br />
+        <h3>Marque os separadores desejados</h3>
+        <input type="checkbox" class="separador" value="400" />
+        <label>Quem somos</label>
+        <br /><input type="checkbox" class="separador" value="400" />
+        <label>Onde estamos</label>
+        <br /><input type="checkbox" class="separador" value="400" />
+        <label>Galeria de fotografias</label>
+        <br /><input type="checkbox" class="separador" value="400" />
+        <label>eCommerce</label>
+        <br /><input type="checkbox" class="separador" value="400" />
+        <label>Gestão interna</label>
+        <br /><input type="checkbox" class="separador" value="400" />
+        <label>Notícias</label>
+        <br /><input type="checkbox" class="separador" value="400" />
+        <label>Redes Sociais</label>
+        <br /><br />
+        <h3>Orçamento estimado</h3>
+        <p>(É um valor meramente indicativo, pode sofrer alterações)</p>
+        <input type="text" id="orcamentoFinal" readonly />
+        <br />
+        <br />
+        <input type="submit" value="Enviar" />
+      </form>
+    </div>
+    <footer>
+      <p>© 2024 WorkOnPortfólios</p>
+    </footer>
+    <script>
+      const form = document.getElementById("orcamentoForm");
+      const tipoPagina = document.getElementById("tipoPagina");
+      const prazo = document.getElementById("prazo");
+      const separadores = document.querySelectorAll(".separador");
+      const orcamentoFinal = document.getElementById("orcamentoFinal");
+
+      function calcularOrcamento() {
+        let total = parseFloat(tipoPagina.value) || 0;
+        let meses = parseInt(prazo.value) || 0;
+
+        separadores.forEach((separador) => {
+          if (separador.checked) {
+            total += parseFloat(separador.value);
+          }
+        });
+
+        let desconto = Math.min(meses * 0.05, 0.2) * total;
+        total -= desconto;
+
+        orcamentoFinal.value = `€${total.toFixed(2)}`;
+      }
+
+      form.addEventListener("input", calcularOrcamento);
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        alert("Orçamento enviado com sucesso!");
+        form.reset();
+      });
+    </script>
+  </body>
+</html>

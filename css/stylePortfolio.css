@@ -1,0 +1,218 @@
+/* Estilo da página */
+body {
+  background-color: #f4f4f4;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+}
+#content-wrap {
+  padding-bottom: 2.5rem;
+}
+
+/* Cabeçalho */
+header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #a5b68d;
+  padding: 20px 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+header h1 {
+  margin: 0;
+  color: #f4f4f4;
+  font-size: 24px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #f4f4f4;
+  margin: 0 15px;
+  font-size: 16px;
+}
+
+nav a:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+/* Colunas */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 100%;
+  margin: 20px 40px;
+  margin-bottom: 100px;
+  gap: 20px;
+}
+
+.column {
+  position: relative;
+  width: calc(33.333% - 20px);
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.column img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.column img:hover {
+  opacity: 0.6;
+}
+
+.column::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 122, 204, 0);
+  transition: background-color 0.3s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.column:hover::after {
+  background-color: rgba(165, 182, 141, 0.5);
+}
+
+/* Texto sobre a imagem */
+.column p {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  margin: 0;
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+/* Popup */
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content img {
+  width: 100%;
+  height: auto;
+}
+
+.popup-close {
+  background: #4a6a49;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.popup-close:hover {
+  background: #6b8c67;
+}
+/* Rodapé */
+footer {
+  position: relative;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* Responsividade */
+
+@media (max-width: 768px) {
+  header {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  nav a {
+    font-size: 14px;
+  }
+  .container {
+    margin: 20px 20px;
+  }
+
+  .column {
+    width: calc(50% - 20px);
+  }
+
+  header h1 {
+    font-size: 20px;
+  }
+
+  nav a {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: 10px 10px;
+  }
+
+  .column {
+    width: 100%;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    margin-top: 10px;
+  }
+
+  header h1 {
+    font-size: 18px;
+  }
+
+  nav a {
+    font-size: 12px;
+  }
+}

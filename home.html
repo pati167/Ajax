@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Patrícia Gomes" />
+    <title>
+      Criação de website com carregamento dinâmico de conteúdo estático através
+      de AJAX
+    </title>
+    <link rel="stylesheet" href="/css/styleHome.css?v=2" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div id="content-wrap">
+      <header>
+        <h1>WorkOnPortfólios</h1>
+        <nav>
+          <a href="#" class="link">Índice</a>
+          <a href="portfolio.html" class="link">Portefólio</a>
+          <a href="orcamento.html" class="link">Orçamento</a>
+          <a href="contacto.html" class="link">Contacto</a>
+        </nav>
+      </header>
+
+      <main>
+        <aside id="barraLateral">
+          <h2>Últimas Notícias</h2>
+          <ul id="rssFeed">
+            Carregando notícias...
+          </ul>
+        </aside>
+
+        <section id="conteudoPrincipal">
+          <h2>Bem-vindo ao seu próximo portfólio!</h2>
+          <br />
+          <h5>
+            Mostre o melhor de você para o mundo. No WorkOnPortfólios,
+            acreditamos que cada projeto conta uma história, e estamos aqui para
+            ajudá-lo a contá-la de maneira incrível. Com ferramentas intuitivas
+            e designs modernos, você pode criar um portfólio profissional em
+            minutos, mesmo sem experiência em design ou programação. Seja você
+            um fotógrafo, designer, desenvolvedor, artista ou escritor, temos a
+            solução ideal para destacar seu talento e conquistar novas
+            oportunidades.
+          </h5>
+          <br />
+          <br />
+          <h3>Por que escolher o WorkonPortefólios</h3>
+          <ul>
+            <li>Fácil de Usar: Arraste, solte e personalize. Simples assim.</li>
+            <li>
+              Modelos Profissionais: Escolha entre uma ampla variedade de
+              estilos que se adaptam à sua identidade.
+            </li>
+            <li>
+              Totalmente Responsivo: Seu portfólio ficará incrível em qualquer
+              dispositivo.
+            </li>
+            <li>
+              Recursos Personalizáveis: Galerias, currículos, seções de contato
+              e muito mais.
+            </li>
+            <li>
+              Compartilhamento Simples: Divulgue seu trabalho com um link direto
+              para clientes e empregadores.
+            </li>
+          </ul>
+
+          <a href="orcamento.html"
+            ><button type="button">Comece Agora</button></a
+          >
+          <br />
+          <br />
+          <br />
+          <div class="conteudo">
+            <ul id="conteudoDinamico">
+              Carregando feedback...
+            </ul>
+          </div>
+          <div id="popup-overlay"></div>
+          <div id="popup">
+            <div id="popupContent"></div>
+            <button id="closePopup">Fechar</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>© 2024 WorkOnPortfólios</p>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          alert("Bem-vindo ao nosso website!");
+        }, 5000);
+      });
+      $(document).ready(function () {
+        $.ajax({
+          type: "GET",
+          url: "/xml/noticias.xml",
+          dataType: "xml",
+          success: function (xml) {
+            var content = "<ul>";
+
+            $(xml)
+              .find("noticia")
+              .each(function () {
+                var titulo = $(this).find("titulo").text();
+                var resumo = $(this).find("resumo").text();
+                var detalhes = $(this).find("detalhes").text();
+
+                content += `
+                <li class="noticia-item">
+                  <a href="#" class="noticia-link" data-titulo="${titulo}" data-resumo="${resumo}" data-detalhes="${detalhes}">
+                    ${titulo}
+                  </a>
+                  <p>${resumo}</p>
+                </li>`;
+              });
+
+            content += "</ul>";
+            $("#rssFeed").html(content);
+          },
+          error: function () {
+            $("#rssFeed").html("Erro ao carregar notícias.");
+          },
+        });
+
+        $(document).on("click", ".noticia-link", function (e) {
+          e.preventDefault();
+
+          var titulo = $(this).data("titulo");
+          var resumo = $(this).data("resumo");
+          var detalhes = $(this).data("detalhes");
+
+          $("#popupContent").html(`
+          <h3>${titulo}</h3>
+          <p>${detalhes}</p>
+        `);
+
+          $("#popup-overlay").fadeIn();
+          $("#popup").fadeIn();
+        });
+
+        $("#closePopup").click(function () {
+          $("#popup-overlay").fadeOut();
+          $("#popup").fadeOut();
+        });
+
+        $(document).click(function (e) {
+          if ($(e.target).is("#popup-overlay")) {
+            $("#popup-overlay").fadeOut();
+            $("#popup").fadeOut();
+          }
+        });
+
+        $.ajax({
+          type: "GET",
+          url: "/xml/conteudo.xml",
+          dataType: "xml",
+          success: function (xml) {
+            var content = "<div class='conteudo'>";
+
+            $(xml)
+              .find("conteudo")
+              .each(function () {
+                var titulo = $(this).find("titulo").text();
+                var subtitulo = $(this).find("subtitulo").text();
+                var cliente = $(this).find("cliente").text();
+                var comentario = $(this).find("comentario").text();
+
+                content += `
+                <div>
+                  <h2>${titulo}</h2>
+                  <h4>${subtitulo}</h4>
+                  <div id="feedback">
+                    <h5>${cliente}</h5>
+                    <p>${comentario}</p>
+                  </div>
+                </div>`;
+              });
+
+            content += "</div>";
+            $("#conteudoDinamico").html(content);
+          },
+          error: function (xhr, status, error) {
+            console.error("Erro ao carregar o arquivo XML: ", error);
+            $("#conteudoPrincipal").html(
+              "<p>Erro ao carregar conteúdo. Tente novamente mais tarde.</p>"
+            );
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
